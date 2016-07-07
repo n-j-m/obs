@@ -1,3 +1,4 @@
+/* eslint-disable */
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -44,7 +45,7 @@ const config = {
     ]
   },
 
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
 
   devServer: {
     historyFallback: true,
@@ -60,15 +61,13 @@ const config = {
     }),
     new ExtractTextPlugin('style.css'),
     new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'index.ejs'),
+      appMountId: 'root',
       title: 'test bed'
     }),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    })
+    new webpack.HotModuleReplacementPlugin()
   ]
 };
 
 module.exports = config;
+/* eslint-enable */

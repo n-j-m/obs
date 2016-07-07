@@ -1,15 +1,29 @@
-import Observable from './Observable';
+import { makeRenderer, h } from './renderer'
 
-const move = Observable.fromEvent('mousemove', document)
-  .map(ev => ev.type);
+function Counter (data) {
+  return (
+    <li>
+      <h2>Count: {data.counter.count}</h2>
+      <button onclick={() => data.counter.count--}>-</button>
+      <button onclick={() => data.counter.count++}>+</button>
+    </li>
+  )
+}
 
-const click = Observable.fromEvent('click', document)
-  .map(ev => ev.type);
+function CounterApp (data) {
+  return (
+    <div>
+      <h1>Counters</h1>
+      <button onclick={() => data.counters.push({ count: 0 })}>
+        Add Counter
+      </button>
+      <ul>
+        {data.counters.map((counter, i) => <Counter counter={counter} key={i} />)}
+      </ul>
+    </div>
+  )
+}
 
-const obs = move.merge(click);
+const exec = makeRenderer(CounterApp, document.getElementById('root'))
 
-obs.subscribe({
-  next(x) {
-    console.log(x);
-  }
-});
+exec({ counters: [] })
